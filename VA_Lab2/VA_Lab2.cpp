@@ -81,6 +81,47 @@ void read_matrx(double* mas2)
 }
 
 
+//вывод матрицы
+void print_matrx(double** Mas, int func)
+{
+    int temp;
+    for (int i = 0; i < num_str / 2; i++)
+    {
+        if (func == 1)
+        {
+            temp = (num_str / 2);
+        }
+        else
+        {
+            temp = (num_str / 2) + 1;
+        }
+        for (int j = 0; j < temp; j++)
+        {
+            if (Mas[i][j] > 99)
+            {
+                printf(" %.0f   ", Mas[i][j]);
+            }
+            else if (Mas[i][j] > 9)
+            {
+                printf(" %.1f   ", Mas[i][j]);
+            }
+            else if ((Mas[i][j] >= 0) && (Mas[i][j] < 10))
+            {
+                printf(" %.2f   ", Mas[i][j]);
+            }
+            else if (Mas[i][j] > -10)
+            {
+                printf("%.2f   ", Mas[i][j]);
+            }
+            else if (Mas[i][j] > -100)
+            {
+                printf("%.1f   ", Mas[i][j]);
+            }
+        }
+        printf("\n");
+    }
+}
+
 int main()
 {
     std::cout << "Hello World!\n";
