@@ -56,6 +56,29 @@ int check_file()
     return 0;
 }
 
+//Заполнение динамических массивов данными из файла
+void read_matrx(double* mas2)
+{
+    ifstream file("file.txt");
+    double temp;
+    for (int i = 0; i < num_str / 2; i++)       //заполнение первой матрицы
+    {
+        for (int j = 0; j < num_str / 2; j++)
+        {
+            file >> temp;
+            Mas1[i][j] = temp;;
+            Mas3[i][j] = temp;;
+        }
+    }
+    for (int i = 0; i < num_str / 2; i++)       //заполнение второй матрицы
+    {
+        file >> temp;
+        mas2[i] = temp;
+        Mas3[i][num_str / 2] = temp;      //дополнение к первой матрице
+    }
+    file >> e;      //чтение точности
+    file.close();       //закрытие файла
+}
 
 
 int main()
