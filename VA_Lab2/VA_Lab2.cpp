@@ -33,7 +33,7 @@ int check_file()
             i++;        //подсчет количества строк
         }
         num_str = i;
-        if (num_str % 2 == 0)
+        if ((num_str - 1) % 2 == 0)
         {
             file.clear();
             file.seekg(0, ios_base::beg);   //переход в начало файла
@@ -45,8 +45,9 @@ int check_file()
                 count++;        //подсчет чисел (счетчик)
             }
             file.close();       //закрытие файла
-            count = count - (num_str - 1) / 2;
+            count = count - (num_str - 1) / 2 - 1;
             if (pow((num_str - 1) / 2, 2) == count) {
+                num_str = (num_str - 1) / 2;      //размерность матрицы
                 return 1;
             }
             return -1;
@@ -57,24 +58,24 @@ int check_file()
 }
 
 //Заполнение динамических массивов данными из файла
-void read_matrx(double* mas2)
+void read_matrx()
 {
     ifstream file("file.txt");
     double temp;
-    for (int i = 0; i < num_str / 2; i++)       //заполнение первой матрицы
+    for (int i = 0; i < num_str; i++)       //заполнение первой матрицы
     {
-        for (int j = 0; j < num_str / 2; j++)
+        for (int j = 0; j < num_str; j++)
         {
             file >> temp;
             Mas1[i][j] = temp;;
             Mas3[i][j] = temp;;
         }
     }
-    for (int i = 0; i < num_str / 2; i++)       //заполнение второй матрицы
+    for (int i = 0; i < num_str; i++)       //заполнение второй матрицы
     {
         file >> temp;
-        mas2[i] = temp;
-        Mas3[i][num_str / 2] = temp;      //дополнение к первой матрице
+        Mas2[i] = temp;
+        Mas3[i][num_str] = temp;      //дополнение к первой матрице
     }
     file >> e;      //чтение точности
     file.close();       //закрытие файла
@@ -85,15 +86,15 @@ void read_matrx(double* mas2)
 void print_matrx(double** Mas, int func)
 {
     int temp;
-    for (int i = 0; i < num_str / 2; i++)
+    for (int i = 0; i < num_str; i++)
     {
         if (func == 1)
         {
-            temp = (num_str / 2);
+            temp = (num_str);
         }
         else
         {
-            temp = (num_str / 2) + 1;
+            temp = num_str + 1;
         }
         for (int j = 0; j < temp; j++)
         {
@@ -125,7 +126,7 @@ void print_matrx(double** Mas, int func)
 
 bool check_dia()
 {
-    for (int i = 0; i < num_str / 2; i++)
+    for (int i = 0; i < num_str; i++)
     {
         if (Mas3[i][i] == 0)
         {
@@ -148,5 +149,47 @@ int main()
         cout << "1) Чтение данных из файла\n\n2) Генерация матрицы случайным образом";
         func = _getch();
     } while (func != 49 && func != 50);
+
+    system("cls");
+
+    cout << "Введите максимальное количество итераций: ";
+    int max_num_iter;
+    do
+    {
+        scanf("%d", &max_num_iter);
+    } while (max_num_iter < 0 || max_num_iter > 100000);
+
+    if (func == 49)     //чтение данных из файла
+    {
+        
+        if (check_file() == 1)
+        {
+            //cout << "Файл имеет правильное форматирование!";
+
+            Mas1 = new double* [num_str];       //создание динамического массива для начальной матрицы
+            for (int i = 0; i < num_str; i++)
+            {
+                Mas1[i] = new double[num_str];
+            }
+
+            Mas2 = new double [num_str];        //создание динамического массива под вектор b
+
+            Mas3 = new double* [num_str + 1];       //создание динамического массива для итоговой матрицы
+            for (int i = 0; i < num_str + 1; i++)
+            {
+                Mas3[i] = new double[num_str];
+            }
+            read_matrx();   //заполнение массивов данными
+        }
+        else
+        {
+            cout << "Файл имеет неверное форматирование!";
+            return 0;
+        }
+    }
+
+    print_matrx(Mas3, 1);
+   
+
 
 }
