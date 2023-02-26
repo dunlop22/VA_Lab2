@@ -122,6 +122,20 @@ void print_matrx(double** Mas, int func)
     }
 }
 
+
+bool check_dia()
+{
+    for (int i = 0; i < num_str / 2; i++)
+    {
+        if (Mas3[i][i] == 0)
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+
 int main()
 {
     std::cout << "Hello World!\n";
