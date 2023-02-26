@@ -138,5 +138,15 @@ bool check_dia()
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    setlocale(LC_ALL, "Rus");
+    srand(time(NULL));
+
+    int func;
+    do
+    {
+        system("cls");
+        cout << "1) Чтение данных из файла\n\n2) Генерация матрицы случайным образом";
+        func = _getch();
+    } while (func != 49 && func != 50);
+
 }
