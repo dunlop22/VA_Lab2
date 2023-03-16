@@ -170,6 +170,124 @@ void init_matrx()
     {
         Mas3[i] = new double[num_str];
     }
+
+    Mas4 = new double[num_str];        //создание динамического массива
+}
+
+bool check_e(double* Mas4_copy)
+{
+    double num = 0;
+    double temp;
+    for (int i = 0; i < num_str && num < e; i++)
+    {
+        temp = abs(Mas4[i] - Mas4_copy[i]);
+        if (temp > num)     //подсчет максимального значения разности
+        {
+            num = temp;
+        }
+    }
+
+    if (num < e)
+    {
+        return true;
+    }
+    return false;
+}
+
+int jacob(int max_num_iter)
+{
+    int num_iter = 0;
+    double* Mas4_copy = new double[num_str];      //динамический массив для исходной матрицы b
+    for (int i = 0; i < num_str; i++)
+    {
+        Mas4[i] = Mas2[i] / Mas3[i][i];
+        //cout << Mas4[i] << "  ";
+    }
+
+    while (num_iter < max_num_iter && num_iter >= 0)
+    {
+        for (int i = 0; i < num_str; i++)
+        {
+            Mas4_copy = Mas4;
+        }
+
+        for (int i = 0; i < num_str; i++)
+        {
+            double summa = 0;
+            for (int j = 0; j < num_str; j++)
+            {
+                if (i != j)
+                {
+                    summa = summa + Mas3[i][j] * Mas4_copy[j];
+                    
+                }
+            }
+            Mas4[i] = (Mas2[i] - summa) / Mas3[i][i];
+            cout << Mas4[i];
+        }
+        num_iter = num_iter + 1;
+        if (check_e(Mas4_copy))
+        {
+            break;
+        }
+        if (num_iter == max_num_iter)
+        {
+            num_iter = -1;
+        }
+    }
+    return num_iter;
+}
+
+int Zeidel(int max_num_iter)
+{
+    int num_iter = 0;
+    double* Mas4_copy = new double[num_str];      //динамический массив для исходной матрицы b
+    for (int i = 0; i < num_str; i++)
+    {
+        Mas4[i] = Mas2[i] / Mas3[i][i];
+    }
+
+    while (num_iter < max_num_iter && num_iter >= 0)
+    {
+        for (int i = 0; i < num_str; i++)
+        {
+            Mas4_copy = Mas4;
+        }
+
+        for (int i = 0; i < num_str; i++)
+        {
+            double sum = 0;
+
+            for (int j = 0; j < num_str; j++)
+            {
+                if (i != j)
+                {
+                    sum += Mas3[i][j] * Mas4[j];
+                }
+            }
+
+            Mas4[i] = (Mas3[i][num_str] - sum) / Mas3[i][i];
+
+            if (Mas4[i] != Mas4[i] || Mas4[i] == INFINITY)
+            {
+                num_iter = max_num_iter - 1;
+                break;
+            }
+        }
+
+        num_iter = num_iter + 1;
+        if (check_e(Mas4_copy))
+        {
+            break;
+        }
+        if (num_iter == max_num_iter)
+        {
+            num_iter = -1;
+        }
+
+
+    }
+    return num_iter;
 }
 
 int main()
@@ -229,7 +347,7 @@ int main()
 
         init_matrx();   //инициализация массивов под заданную размерность
 
-        generate_matrx();           //заполнение матрицы случайными значениями
+        generate_matrx();   //заполнение матрицы случайными значениями
     }
 
     print_matrx(Mas3, 1);
@@ -239,5 +357,27 @@ int main()
         cout << "На диагонали обнаружены нулевые элементы";
         return 0;
     }
+    int num_iter = 0;
+    /*
+    num_iter = jacob(max_num_iter);
+
+
+    cout << "\n\nКоличество итераций: " << num_iter;
+    if (num_iter < 0)
+    {
+        cout << "Решение расходится";
+    }
+    else
+    {
+        //вывод количества итераций
+        //вывод массива 
+    }
+    */
+
+
+    num_iter = Zeidel(max_num_iter);
+    cout << "\n\nКоличество итераций: " << num_iter;
+
+
 
 }
