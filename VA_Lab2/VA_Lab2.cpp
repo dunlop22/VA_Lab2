@@ -1,4 +1,5 @@
 ﻿#define _CRT_SECURE_NO_WARNINGS
+#define _CRT_RAND_S
 #include <iostream>
 #include <fstream>
 #include <conio.h>
@@ -14,6 +15,28 @@ double* Mas5_1;   //динамический массив под невязки 
 double* Mas5_2;   //динамический массив под невязки Зейделя
 
 double e = 0 ;       //значение точности
+/*
+void new_generate_matrx()
+{
+    for (int i = 0; i < num_str; i++)
+    {
+        double value;
+
+        for (int j = 0; j <= num_str; j++)
+        {
+            unsigned int v1;
+            rand_s(&v1);
+
+            do
+            {
+                value = (int)(((double)v1 / ((double)UINT_MAX + 1) * 50) - 15);
+            } while (i == j && value == 0);
+
+            matrix[i].push_back(value * (1 + (n - 1) * (i == j)));
+        }
+    }
+}
+*/
 
 //генерация случайных значений матрицы
 void generate_matrx()
